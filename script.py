@@ -2,47 +2,6 @@ import cv2
 import os
 import argparse
 
-# dataset_dir = "./food-dataset"
-# new_dir = "./food-dataset-copy"
-
-
-def resize_img(img_dir: str, new_dir: str, img_size: tuple):
-    isError = False
-    if not os.path.exists(new_dir):
-        os.mkdir(new_dir)
-    joined = os.path.join(new_dir+img_dir)
-    if not os.path.exists(joined):
-        print("not found target directory, creating one at", joined)
-        os.mkdir(joined)
-
-    dirs = [f.path for f in os.scandir(img_dir)]
-    for test_or_train in dirs:
-        print(test_or_train)
-        classes_path = os.path.join(new_dir+test_or_train)
-        if not os.path.exists(classes_path):
-            os.mkdir(classes_path)
-
-        classes = [f.path for f in os.scandir(test_or_train)]
-        for each_class in classes:
-            each_class_path = os.path.join(new_dir, each_class)
-            if not os.path.exists(each_class_path):
-                os.mkdir(each_class_path)
-
-            imgs = [f.path for f in os.scandir(each_class)]
-            for img_path in imgs:
-                image = cv2.imread(img_path)
-                new_path = os.path.join(new_dir + img_path[1:])
-
-                try:
-                    res = cv2.resize(image, dsize=img_size, interpolation=cv2.INTER_CUBIC)
-                    assert cv2.imwrite(new_path, res)
-                except cv2.error as e:
-                    print("problem occur in", new_path, e)
-                    isError = True
-    print("resize image complete")
-    if isError:
-        print("there is some error, check")
-
 class RecursiveResize:
 
     __count = 0 
